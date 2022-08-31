@@ -23,7 +23,7 @@ public class GameMgr : MonoBehaviour
     // 플레이어 상태값
     float f_Speed = 1.0f; // 이동속도
     float f_Jump = 400.0f;  // 점프력
-    int isJump = 0; // 0 = 점프 가능한 상태 1 = 점프중(상승) 2 = 점프중(하강) 3 = 착지
+    int isJump = 0; // 0 = 점프 가능한 상태 1 = 점프중(상승) 2 = 점프중(하강)
     public void SetSpeed(float _speed)
     {
         f_Speed = _speed;
@@ -39,13 +39,5 @@ public class GameMgr : MonoBehaviour
     public float GetJump()
     {
         return f_Jump;
-    }
-    public void SetJumpNow(int _i)
-    {
-        isJump = _i;
-    }
-    public int GetJumpNow()
-    {
-        return isJump;
     }
 }
