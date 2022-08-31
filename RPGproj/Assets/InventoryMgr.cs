@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class InventoryMgr : MonoBehaviour
 {
-    // 인벤토리 프로퍼티 싱글톤 //
-    static InventoryMgr m_Instance = null;
-    public static InventoryMgr Instance
+    // 인벤토리 싱글톤 //
+    private InventoryMgr() { } 
+    private static InventoryMgr instance = null;
+    public static InventoryMgr GetInstance()
     {
-        get
+        if (instance == null)
         {
-            if (m_Instance == null) m_Instance = new InventoryMgr();
-            return m_Instance;
+            Debug.LogError("오브젝트를 찾을 수 없습니다.");
         }
+        return instance;
+    }
+    private void Awake()
+    {
+        instance = this;
     }
 
     bool B_inventoryActive = false;
