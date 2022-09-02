@@ -29,6 +29,8 @@ public class InventoryMgr : MonoBehaviour
 
     Slot[] slots; // 슬롯 배열
 
+    // bool InventoryIsFull;
+
     private void Start()
     {
         slots = SlotParent.GetComponentsInChildren<Slot>();
@@ -89,5 +91,6 @@ public class InventoryMgr : MonoBehaviour
         }
 
         // 인벤토리 가득 참. (구현해야함)
+        // InventoryIsFull = true;
     }
 }
