@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
             }
             animator.SetInteger("IsWalking", 1);
         }
-        
+        // 왼쪽 움직임
         if(Input.GetKey(KeyCode.LeftArrow))
         {
             rigid.velocity += new Vector2( -5 * GameMgr.GetInstance().GetSpeed(), 0);
@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
             }
             animator.SetInteger("IsWalking", 1);
         }
-
+        // 좌우 이동 애니메이션 예외처리
         if ((!Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow)) || (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.RightArrow)))
         {
             animator.SetInteger("IsWalking", 0);
@@ -71,12 +71,19 @@ public class Player : MonoBehaviour
         {
             rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
-
+        // 아래 엎드리기
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            
+            if (GameMgr.GetInstance().GetIsGround() == true)
+            {
+                animator.SetInteger("IsDown", 1);
+            }
         }
-        
+        else if (!Input.GetKey(KeyCode.DownArrow))
+        {
+            animator.SetInteger("IsDown", 0);
+        }
+        // 점프
         if(Input.GetKeyDown(KeyCode.Space) && GameMgr.GetInstance().GetJumpNow() == 0)
         {
             rigid.AddForce(new Vector2(0, GameMgr.GetInstance().GetJump()));
@@ -134,28 +141,8 @@ public class Player : MonoBehaviour
             rigid.velocity -= new Vector2(rigid.velocity.x + 5.0f, 0);
         }
     }
-    void GroundCheck()
-    {
-        switch (GameMgr.GetInstance().GetIsGround())
-        {
-            case true:
-                {
-                    rigid.gravityScale = 0;
-                }
-                break;
-            case false:
-                {
-                    rigid.gravityScale = 3;
-                }
-                break;
-        }
 
-//        if(!Input.GetKey(KeyCode.RightArrow) &&
-//           !Input.GetKey(KeyCode.LeftArrow) &&
-//           GameMgr.GetInstance().GetIsGround() == true &&
-//           GameMgr.GetInstance().GetJumpNow() == 0)
-//        {
-//            rigid.velocity = new Vector2(0,0);
-//        }
-    }
+
+
+    
 }

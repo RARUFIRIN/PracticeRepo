@@ -351,6 +351,7 @@
 "Assets/Getitem.cs"
 "Assets/InventoryMgr.cs"
 "Assets/Item.cs"
+"Assets/Monster.cs"
 "Assets/Player.cs"
 "Assets/Prefab_item.cs"
 "Assets/Slot.cs"
