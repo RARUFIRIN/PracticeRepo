@@ -33,6 +33,7 @@ public class Getitem : MonoBehaviour
         }
     }
 
+    // ¹Ù´Ú Ã¼Å©
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.CompareTag("Ground"))

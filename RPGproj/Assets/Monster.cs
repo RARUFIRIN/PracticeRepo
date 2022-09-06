@@ -15,6 +15,9 @@ public class Monster : MonoBehaviour
     float Speed = 1.5f;
     MonsterState State;
 
+    float jump_pre;
+    float jump_col;
+    
     float RayDist = 5.0f;
 
     Vector2 dir = Vector2.right;
@@ -23,6 +26,9 @@ public class Monster : MonoBehaviour
         animator = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        jump_pre = gameObject.transform.position.y;
+        jump_col = gameObject.transform.position.y;
     }
     private void Start()
     {
@@ -43,7 +49,7 @@ public class Monster : MonoBehaviour
             case MonsterState.Trace:
                 {
                     Trace();
-
+                    JumpState();
                 }
                 break;
             case MonsterState.Die:
@@ -59,6 +65,7 @@ public class Monster : MonoBehaviour
             default:
                 break;
         }
+
     }
 
     enum MonsterState
@@ -77,19 +84,35 @@ public class Monster : MonoBehaviour
             case 0:
                 {
                     animator.SetInteger("IsWalk", 0);
-                    rigid.velocity -= new Vector2(rigid.velocity.x, 0);
+                    rigid.velocity -= new Vector2(rigid.velocity.x, rigid.velocity.y);
                 }
                 break;
             case 1:
                 {
-                    MoveLeft();
+                    Move(-1);
                 }
                 break;
             case 2:
                 {
-                    MoveRight();
+                    Move(1);
                 }
                 break;
+        }
+    }
+
+    void JumpState() // 점프 > 하강
+    {
+        jump_pre = jump_col;
+        jump_col = gameObject.transform.position.y;
+        if (jump_pre - jump_col > 0.01)
+        {
+            animator.SetInteger("IsAttack", 2);
+        }
+
+        // 점프 시 속도 제한
+        if (rigid.velocity.y > 11.0f)
+        {
+            rigid.velocity = new Vector2(rigid.velocity.x, 11.0f);
         }
     }
 
@@ -99,21 +122,38 @@ public class Monster : MonoBehaviour
         IsMove = Random.Range(0, 3); // 0 idle 1 left 2 right
         StartCoroutine(MoveTime());
     }
+    IEnumerator AttackTime()
+    {
+        yield return new WaitForSeconds(3.0f);
+        IsAttack = 0;
+    }
     
-    void MoveLeft()
+    void Move(int _i /* -1 left 1 right*/)
     {
         rigid.velocity -= new Vector2(rigid.velocity.x, 0);
         animator.SetInteger("IsWalk", 1);
-        rigid.velocity += new Vector2(-Speed, 0);
-        spriteRenderer.flipX = true;
+        rigid.velocity += new Vector2(Speed * _i, 0);
+        if (_i == -1)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
+        }
     }
-    void MoveRight()
+
+    void Attack(float _f /* -1 Left 1 Right */)
     {
-        rigid.velocity -= new Vector2(rigid.velocity.x, 0);
-        animator.SetInteger("IsWalk", 1);
-        rigid.velocity += new Vector2(Speed, 0);
-        spriteRenderer.flipX = false;
+        if (IsAttack == 0)
+        {
+            IsAttack = 1;
+            rigid.AddForce(new Vector2(100 * _f, 300));
+            animator.SetInteger("IsAttack", 1);
+            StartCoroutine(AttackTime());
+        }
     }
+
     void RayCast()
     {
         Vector2 MosterPos = new Vector2(transform.position.x, transform.position.y);
@@ -129,20 +169,45 @@ public class Monster : MonoBehaviour
     }
     void Trace()
     {
-        if(Vector3.Distance(transform.position, GameMgr.GetInstance().GetPlayerPos()) < RayDist)
+        if(Vector3.Distance(transform.position, GameMgr.GetInstance().GetPlayerPos()) < RayDist * 2)
         {
-            //if (Vector3.Distance(transform.position, GameMgr.GetInstance().GetPlayerPos()) > RayDist / 2)
-            //{
+            if (Vector3.Distance(transform.position, GameMgr.GetInstance().GetPlayerPos()) > 0 && IsAttack == 2)
+            {
                 if (GameMgr.GetInstance().GetPlayerPos().x > transform.position.x)
                 {
-                    MoveRight();
+                    Move(1);
                 }
 
                 if (GameMgr.GetInstance().GetPlayerPos().x < transform.position.x)
                 {
-                    MoveLeft();
+                    Move(-1);
                 }
-            //}
+            }
+            if(Vector3.Distance(transform.position, GameMgr.GetInstance().GetPlayerPos()) < RayDist / 2)
+            {
+                if (GameMgr.GetInstance().GetPlayerPos().x > transform.position.x)
+                {
+                    Attack(1);
+                }
+
+                if (GameMgr.GetInstance().GetPlayerPos().x < transform.position.x)
+                {
+                    Attack(-1);
+                }
+            }
+        }
+        else
+        {
+            State = MonsterState.IDLE;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Ground") && IsAttack == 1)
+        {
+            IsAttack = 2;
+            animator.SetInteger("IsAttack", 0);
         }
     }
 }

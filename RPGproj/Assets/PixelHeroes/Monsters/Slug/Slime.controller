@@ -9,7 +9,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 6
-    m_ConditionEvent: IsJump
+    m_ConditionEvent: IsAttack
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8866217115697642350}
@@ -117,7 +117,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 6
-    m_ConditionEvent: IsJump
+    m_ConditionEvent: IsAttack
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5289303009189686501}
@@ -176,7 +176,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 6
-    m_ConditionEvent: IsJump
+    m_ConditionEvent: IsAttack
     m_EventTreshold: 1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4961420306090630387}
@@ -255,7 +255,7 @@ AnimatorController:
   m_Name: Slime
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: IsJump
+  - m_Name: IsAttack
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -395,7 +395,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 6
-    m_ConditionEvent: IsJump
+    m_ConditionEvent: IsAttack
     m_EventTreshold: 1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4961420306090630387}
