@@ -15,10 +15,9 @@ public class Monster : MonoBehaviour
     float Speed = 1.5f;
     MonsterState State;
 
-    RaycastHit2D hit;
     float RayDist = 5.0f;
-    
-    
+
+    Vector2 dir = Vector2.right;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -32,13 +31,34 @@ public class Monster : MonoBehaviour
     }
     private void Update()
     {
-        Debug.Log(IsMove);
-        if (State == MonsterState.IDLE)
+        Debug.Log(State);
+        switch (State)
         {
-            MoveState();
+            case MonsterState.IDLE:
+                {
+                    MoveState();
+                    RayCast();
+                }
+                break;
+            case MonsterState.Trace:
+                {
+                    Trace();
+
+                }
+                break;
+            case MonsterState.Die:
+                {
+
+                }
+                break;
+            case MonsterState.Damaged:
+                {
+
+                }
+                break;
+            default:
+                break;
         }
-        RayCast();
-        
     }
 
     enum MonsterState
@@ -62,19 +82,12 @@ public class Monster : MonoBehaviour
                 break;
             case 1:
                 {
-                    rigid.velocity -= new Vector2(rigid.velocity.x, 0);
-                    animator.SetInteger("IsWalk", 1);
-                    rigid.velocity += new Vector2(-Speed, 0);
-                    spriteRenderer.flipX = true;
+                    MoveLeft();
                 }
                 break;
             case 2:
                 {
-                    rigid.velocity -= new Vector2(rigid.velocity.x, 0);
-                    animator.SetInteger("IsWalk", 1);
-                    rigid.velocity += new Vector2(Speed, 0);
-                    spriteRenderer.flipX = false;
-
+                    MoveRight();
                 }
                 break;
         }
@@ -86,18 +99,50 @@ public class Monster : MonoBehaviour
         IsMove = Random.Range(0, 3); // 0 idle 1 left 2 right
         StartCoroutine(MoveTime());
     }
-
+    
+    void MoveLeft()
+    {
+        rigid.velocity -= new Vector2(rigid.velocity.x, 0);
+        animator.SetInteger("IsWalk", 1);
+        rigid.velocity += new Vector2(-Speed, 0);
+        spriteRenderer.flipX = true;
+    }
+    void MoveRight()
+    {
+        rigid.velocity -= new Vector2(rigid.velocity.x, 0);
+        animator.SetInteger("IsWalk", 1);
+        rigid.velocity += new Vector2(Speed, 0);
+        spriteRenderer.flipX = false;
+    }
     void RayCast()
     {
-        Debug.DrawRay(transform.position - new Vector3(RayDist / 2, -0.5f, 0), new Vector3(1, 0, 0) * RayDist, Color.green);
-        hit = Physics2D.Raycast(transform.position - new Vector3(RayDist / 2, -0.5f, 0), new Vector3(1, 0, 0) * RayDist);
-        if (hit)
+        Vector2 MosterPos = new Vector2(transform.position.x, transform.position.y);
+
+        Debug.DrawRay(MosterPos - new Vector2(RayDist / 2, -0.5f),dir * RayDist, Color.green);
+        RaycastHit2D hit = Physics2D.Raycast(MosterPos - new Vector2(RayDist / 2 , - 0.5f), dir, RayDist, LayerMask.GetMask("Player"));
+        if (hit.collider != null && hit.transform.CompareTag("Player"))
         {
-            Debug.Log("¹ß°¢µÊ");
+            
+            State = MonsterState.Trace;
+            Debug.Log(hit);
         }
     }
     void Trace()
     {
+        if(Vector3.Distance(transform.position, GameMgr.GetInstance().GetPlayerPos()) < RayDist)
+        {
+            //if (Vector3.Distance(transform.position, GameMgr.GetInstance().GetPlayerPos()) > RayDist / 2)
+            //{
+                if (GameMgr.GetInstance().GetPlayerPos().x > transform.position.x)
+                {
+                    MoveRight();
+                }
 
+                if (GameMgr.GetInstance().GetPlayerPos().x < transform.position.x)
+                {
+                    MoveLeft();
+                }
+            //}
+        }
     }
 }

@@ -26,6 +26,7 @@ public class GameMgr : MonoBehaviour
     int isJump = 0; // 0 = 점프 가능한 상태 1 = 점프중(상승) 2 = 점프중(하강)
     bool IsGround;
 
+    Vector3 PlayerPos;
 
     public void SetSpeed(float _speed)
     {
@@ -58,5 +59,13 @@ public class GameMgr : MonoBehaviour
     public void SetIsGround(bool _state)
     {
         IsGround = _state;
+    }
+    public void SetPlayerPos(Vector3 _pos)
+    {
+        PlayerPos = _pos;
+    }
+    public Vector3 GetPlayerPos()
+    {
+        return PlayerPos;
     }
 }

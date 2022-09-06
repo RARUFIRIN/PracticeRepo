@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        GameMgr.GetInstance().SetPlayerPos(transform.position);
         if (CanAttack != 2)
         {
             Move();
@@ -40,6 +41,7 @@ public class Player : MonoBehaviour
 
     void Move()
     {
+
         // 오른쪽 움직임
         if (Input.GetKey(KeyCode.RightArrow))
         {
