@@ -27,7 +27,7 @@ public class InventoryMgr : MonoBehaviour
     [SerializeField]
     GameObject SlotParent;  // 그리드
 
-    Slot[] slots; // 슬롯 배열
+    public Slot[] slots; // 슬롯 배열
 
     // bool InventoryIsFull;
 

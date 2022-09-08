@@ -14,7 +14,7 @@ public class CameraControl : MonoBehaviour
     {
         HWidth = Camera.main.aspect * Camera.main.orthographicSize;
         HHeight = Camera.main.orthographicSize;
-        MinX = -1; MinY = -5;
+        MinX = -1; MinY = -7;
         MaxX = 51; MaxY = 10;
     }
 

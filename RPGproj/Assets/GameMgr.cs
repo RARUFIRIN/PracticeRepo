@@ -21,6 +21,7 @@ public class GameMgr : MonoBehaviour
     }
 
     // 플레이어 상태값
+    float AttackDamage;
     float f_Speed = 1.0f; // 이동속도
     float f_Jump = 400.0f;  // 점프력
     int isJump = 0; // 0 = 점프 가능한 상태 1 = 점프중(상승) 2 = 점프중(하강)
@@ -67,5 +68,13 @@ public class GameMgr : MonoBehaviour
     public Vector3 GetPlayerPos()
     {
         return PlayerPos;
+    }
+    public void SetAttackDamage(float _f)
+    {
+        AttackDamage = _f;
+    }
+    public float GetAttackDamage()
+    {
+        return AttackDamage;
     }
 }

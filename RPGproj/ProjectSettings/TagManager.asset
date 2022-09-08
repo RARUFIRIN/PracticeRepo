@@ -8,6 +8,7 @@ TagManager:
   - Item
   - Monster
   - Border
+  - AttackBox
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Player
   - Border_Monster
   - Monster
-  - 
+  - AttackBox
   - 
   - 
   - 

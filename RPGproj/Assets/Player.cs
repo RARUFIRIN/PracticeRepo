@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
+    [SerializeField]
+    GameObject Attack_Box_Prefab;
     Rigidbody2D rigid;
     SpriteRenderer spriteRenderer;
 
@@ -28,6 +30,11 @@ public class Player : MonoBehaviour
         jump_col = gameObject.transform.position.y;
     }
 
+    private void Start()
+    {
+        GameMgr.GetInstance().SetAttackDamage(20.0f);
+        
+    }
     void Update()
     {
         GameMgr.GetInstance().SetPlayerPos(transform.position);
@@ -73,6 +80,8 @@ public class Player : MonoBehaviour
         {
             rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
+        
+        
         // 아래 엎드리기
         if (Input.GetKey(KeyCode.DownArrow))
         {
@@ -85,6 +94,8 @@ public class Player : MonoBehaviour
         {
             animator.SetInteger("IsDown", 0);
         }
+     
+        
         // 점프
         if(Input.GetKeyDown(KeyCode.Space) && GameMgr.GetInstance().GetJumpNow() == 0)
         {
@@ -117,6 +128,15 @@ public class Player : MonoBehaviour
     {
         if (CanAttack == 0 && Input.GetKeyDown(KeyCode.A))
         {
+            SkillMgr.GetInstance().SetSkill(0.5f, new Vector2(0, 0));
+            if (spriteRenderer.flipX == false)
+            {
+                Instantiate(Attack_Box_Prefab, gameObject.transform.position + new Vector3(0.7f, 0.5f, 0), Quaternion.identity);
+            }
+            else
+            {
+                Instantiate(Attack_Box_Prefab, gameObject.transform.position + new Vector3(-0.7f, 0.5f, 0), Quaternion.identity);
+            }
             animator.SetInteger("IsAttack", 1);
             CanAttack = 1;
             StartCoroutine(Attackable());

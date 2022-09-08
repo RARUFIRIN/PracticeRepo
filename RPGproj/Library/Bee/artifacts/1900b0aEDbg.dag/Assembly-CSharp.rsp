@@ -345,7 +345,9 @@
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/Unity.VSCode.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/UnityEngine.UI.ref.dll"
+"Assets/AttackBox.cs"
 "Assets/CameraControl.cs"
+"Assets/DragSlot.cs"
 "Assets/Drop_item.cs"
 "Assets/GameMgr.cs"
 "Assets/Getitem.cs"
@@ -354,6 +356,8 @@
 "Assets/Monster.cs"
 "Assets/Player.cs"
 "Assets/Prefab_item.cs"
+"Assets/QuickItem.cs"
+"Assets/SkillMgr.cs"
 "Assets/Slot.cs"
 -langversion:9.0
 

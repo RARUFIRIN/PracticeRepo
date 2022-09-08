@@ -11,7 +11,7 @@ public class Monster : MonoBehaviour
     int IsAttack;
     int IsMove;
     int IsDie;
-    float HP;
+    public float HP;
     float Speed = 1.5f;
     MonsterState State;
 
@@ -23,6 +23,8 @@ public class Monster : MonoBehaviour
     Vector2 dir = Vector2.right;
     private void Awake()
     {
+        HP = 100.0f;
+
         animator = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -37,6 +39,15 @@ public class Monster : MonoBehaviour
     }
     private void Update()
     {
+        if (IsAttack == 1)
+        {
+            StartCoroutine(AttackTime());
+        }
+
+        if(HP <= 0)
+        {
+            State = MonsterState.Die;
+        }
         Debug.Log(State);
         switch (State)
         {
@@ -52,14 +63,14 @@ public class Monster : MonoBehaviour
                     JumpState();
                 }
                 break;
-            case MonsterState.Die:
+            case MonsterState.Damaged:
                 {
 
                 }
                 break;
-            case MonsterState.Damaged:
+            case MonsterState.Die:
                 {
-
+                    StartCoroutine(DieMotion());
                 }
                 break;
             default:
@@ -72,8 +83,8 @@ public class Monster : MonoBehaviour
     {
         IDLE,
         Trace,
-        Die,
         Damaged,
+        Die,
     }
 
 
@@ -124,10 +135,50 @@ public class Monster : MonoBehaviour
     }
     IEnumerator AttackTime()
     {
+        IsAttack = 2;
         yield return new WaitForSeconds(3.0f);
         IsAttack = 0;
     }
     
+    IEnumerator ChangeState(float _f, MonsterState _S) // »óÅÂº¯È­ µô·¹ÀÌ
+    {
+        yield return new WaitForSeconds(_f);
+        State = _S;
+    }
+
+    IEnumerator DieMotion()
+    {
+        animator.SetInteger("IsDie", 1);
+        yield return new WaitForSeconds(0.5f);
+        Destroy(gameObject);
+    }
+
+
+    void Damaged()
+    {
+        State = MonsterState.Damaged;
+        animator.SetInteger("IsWalk", 0);
+        animator.SetInteger("IsAttack", 0);
+        rigid.velocity = Vector3.zero;
+        if (GameMgr.GetInstance().GetPlayerPos().x < transform.position.x)
+        {
+            rigid.AddForce(new Vector2(40, 100));
+        }
+        else
+        {
+            rigid.AddForce(new Vector2(-40, 100));
+        }
+        HP -= GameMgr.GetInstance().GetAttackDamage();
+        StartCoroutine(ChangeState(1.5f, MonsterState.Trace));
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.transform.CompareTag("AttackBox") && State != MonsterState.Damaged)
+        {
+            Damaged();
+        }
+    }
     void Move(int _i /* -1 left 1 right*/)
     {
         rigid.velocity -= new Vector2(rigid.velocity.x, 0);
@@ -148,9 +199,8 @@ public class Monster : MonoBehaviour
         if (IsAttack == 0)
         {
             IsAttack = 1;
-            rigid.AddForce(new Vector2(100 * _f, 300));
+            rigid.AddForce(new Vector2(70 * _f, 200));
             animator.SetInteger("IsAttack", 1);
-            StartCoroutine(AttackTime());
         }
     }
 
@@ -171,7 +221,7 @@ public class Monster : MonoBehaviour
     {
         if(Vector3.Distance(transform.position, GameMgr.GetInstance().GetPlayerPos()) < RayDist * 2)
         {
-            if (Vector3.Distance(transform.position, GameMgr.GetInstance().GetPlayerPos()) > 0 && IsAttack == 2)
+            if (Vector3.Distance(transform.position, GameMgr.GetInstance().GetPlayerPos()) > 2.5f && IsAttack != 1)
             {
                 if (GameMgr.GetInstance().GetPlayerPos().x > transform.position.x)
                 {
@@ -204,10 +254,11 @@ public class Monster : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.transform.CompareTag("Ground") && IsAttack == 1)
+        if (collision.transform.CompareTag("Ground") && (IsAttack != 1 || State == MonsterState.Damaged))
         {
-            IsAttack = 2;
             animator.SetInteger("IsAttack", 0);
+
+            rigid.velocity = Vector3.zero; // ¹Ù´Ú¿¡ ´êÀ¸¸é Á¤Áö
         }
     }
 }
