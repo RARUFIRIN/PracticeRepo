@@ -31,8 +31,13 @@ public class InventoryMgr : MonoBehaviour
 
     // bool InventoryIsFull;
 
+    Slot PreSlot, CurSlot;
+    // 퀵슬롯 동기화 용 슬롯
+
     private void Start()
     {
+        PreSlot = GetComponent<Slot>();
+        CurSlot = GetComponent<Slot>();
         slots = SlotParent.GetComponentsInChildren<Slot>();
     }
 
@@ -92,5 +97,32 @@ public class InventoryMgr : MonoBehaviour
 
         // 인벤토리 가득 참. (구현해야함)
         // InventoryIsFull = true;
+    }
+
+    public void InstedUpdateSlotCount(Slot _s)
+    {
+        _s.UpdateSlotCount(-1);
+    }    
+
+    public void SetChangedSlots(Slot _s1, Slot _s2)
+    {
+        PreSlot = _s1;
+        CurSlot = _s2;
+    }
+
+    public Slot GetChangedSlot(int i)/* 0은 PreSlot을 1은 CurSlot 을 반환합니다.)*/
+    {
+        if (i == 0)
+        {
+            return PreSlot;
+        }
+        else if(i == 1)
+        {
+            return CurSlot;
+        }
+        else
+        {
+            return null;
+        }
     }
 }

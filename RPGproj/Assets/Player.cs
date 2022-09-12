@@ -32,7 +32,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        GameMgr.GetInstance().SetAttackDamage(20.0f);
+        GameMgr.GetInstance().SetAttackDamage(20);
         
     }
     void Update()
@@ -52,7 +52,7 @@ public class Player : MonoBehaviour
         // 오른쪽 움직임
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            rigid.velocity += new Vector2(5 * GameMgr.GetInstance().GetSpeed(), 0);
+            rigid.velocity += new Vector2(5 * GameMgr.GetInstance().PSpeed, 0);
             if (!Input.GetKey(KeyCode.LeftArrow))
             {
                 spriteRenderer.flipX = false;
@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
         // 왼쪽 움직임
         if(Input.GetKey(KeyCode.LeftArrow))
         {
-            rigid.velocity += new Vector2( -5 * GameMgr.GetInstance().GetSpeed(), 0);
+            rigid.velocity += new Vector2( -5 * GameMgr.GetInstance().PSpeed, 0);
             if (!Input.GetKey(KeyCode.RightArrow))
             {
                 spriteRenderer.flipX = true;
@@ -85,7 +85,7 @@ public class Player : MonoBehaviour
         // 아래 엎드리기
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            if (GameMgr.GetInstance().GetIsGround() == true)
+            if (GameMgr.GetInstance().PIsGround == true)
             {
                 animator.SetInteger("IsDown", 1);
             }
@@ -97,11 +97,11 @@ public class Player : MonoBehaviour
      
         
         // 점프
-        if(Input.GetKeyDown(KeyCode.Space) && GameMgr.GetInstance().GetJumpNow() == 0)
+        if(Input.GetKeyDown(KeyCode.Space) && GameMgr.GetInstance().PIsJump == 0)
         {
-            rigid.AddForce(new Vector2(0, GameMgr.GetInstance().GetJump()));
+            rigid.AddForce(new Vector2(0, GameMgr.GetInstance().PJump));
             animator.SetInteger("IsJump", 1);
-            GameMgr.GetInstance().SetJumpNow(1);
+            GameMgr.GetInstance().PIsJump = 1;
         }
 
         RimitSpeed();
@@ -114,7 +114,7 @@ public class Player : MonoBehaviour
         if(jump_pre - jump_col > 0.01)
         {
             animator.SetInteger("IsJump", 2);
-            GameMgr.GetInstance().SetJumpNow(2);
+            GameMgr.GetInstance().PIsJump = 2;
         }
 
         // 점프 시 속도 제한

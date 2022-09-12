@@ -27,4 +27,8 @@ public class DragSlot : MonoBehaviour
         color.a = _f;
         itemImage.color = color;
     }
+    public Sprite GetImage()
+    {
+        return itemImage.sprite;
+    }
 }

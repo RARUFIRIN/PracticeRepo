@@ -356,7 +356,8 @@
 "Assets/Monster.cs"
 "Assets/Player.cs"
 "Assets/Prefab_item.cs"
-"Assets/QuickItem.cs"
+"Assets/QuickInven.cs"
+"Assets/QuickSlot.cs"
 "Assets/SkillMgr.cs"
 "Assets/Slot.cs"
 -langversion:9.0

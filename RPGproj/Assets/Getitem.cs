@@ -26,10 +26,10 @@ public class Getitem : MonoBehaviour
         }
 
         // 점프 상태
-        if (collision.transform.CompareTag("Ground") && GameMgr.GetInstance().GetJumpNow() == 2)
+        if (collision.transform.CompareTag("Ground") && GameMgr.GetInstance().PIsJump == 2)
         {
             animator.SetInteger("IsJump", 0);
-            GameMgr.GetInstance().SetJumpNow(0);
+            GameMgr.GetInstance().PIsJump = 0;
         }
     }
 
@@ -38,14 +38,14 @@ public class Getitem : MonoBehaviour
     {
         if (collision.transform.CompareTag("Ground"))
         {
-            GameMgr.GetInstance().SetIsGround(true);
+            GameMgr.GetInstance().PIsGround = true;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.transform.CompareTag("Ground"))
         {
-            GameMgr.GetInstance().SetIsGround(false);
+            GameMgr.GetInstance().PIsGround = false;
         }
     }
 }

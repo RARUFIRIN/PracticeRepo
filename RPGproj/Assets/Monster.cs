@@ -11,7 +11,7 @@ public class Monster : MonoBehaviour
     int IsAttack;
     int IsMove;
     int IsDie;
-    public float HP;
+    public int HP;
     float Speed = 1.5f;
     MonsterState State;
 
@@ -23,7 +23,7 @@ public class Monster : MonoBehaviour
     Vector2 dir = Vector2.right;
     private void Awake()
     {
-        HP = 100.0f;
+        HP = 100;
 
         animator = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();

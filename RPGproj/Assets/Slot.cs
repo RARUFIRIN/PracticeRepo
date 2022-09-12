@@ -15,8 +15,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     private TextMeshProUGUI text_count;
     [SerializeField]
     private GameObject image_count;
-    [SerializeField]
-    private Image DragSlotimg;
+
     #region 인벤토리 상호작용
     public void OnPointerClick(PointerEventData eventData)      // 마우스 우클릭 이벤트
     {
@@ -82,6 +81,8 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         int tempitemCount = itemCount;
 
         AddItem(DragSlot.instance.TargetSlot.item, DragSlot.instance.TargetSlot.itemCount); // 드롭할 슬롯에 아이템 추가
+
+        InventoryMgr.GetInstance().SetChangedSlots(DragSlot.instance.TargetSlot , this);
 
         if (tempitem != null)
             DragSlot.instance.TargetSlot.AddItem(tempitem, tempitemCount);      // 드롭할 슬롯에 아이템이 있었다면 드래그 시작 슬롯에 추가

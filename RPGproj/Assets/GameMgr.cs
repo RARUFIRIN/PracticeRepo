@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameMgr : MonoBehaviour
 {
-    // 인벤토리 싱글톤 //
+    // 게임매니저 싱글톤 //
     private GameMgr() { }
     private static GameMgr instance = null;
     public static GameMgr GetInstance()
@@ -21,46 +21,58 @@ public class GameMgr : MonoBehaviour
     }
 
     // 플레이어 상태값
-    float AttackDamage;
-    float f_Speed = 1.0f; // 이동속도
-    float f_Jump = 400.0f;  // 점프력
+    int AttackDamage;
+    float Speed = 1.0f; // 이동속도
+    float Jump = 400.0f;  // 점프력
     int isJump = 0; // 0 = 점프 가능한 상태 1 = 점프중(상승) 2 = 점프중(하강)
     bool IsGround;
 
+    int MaxHP;
+    int HP;
+
+    int MaxMP;
+    int MP;
+
+    int MaxEXP;
+    int EXP;
+
     Vector3 PlayerPos;
 
-    public void SetSpeed(float _speed)
+
+    public int PHP
     {
-        f_Speed = _speed;
+        // HP
+        get { return HP; }
+        set { HP = value; }
     }
-    public float GetSpeed()
+    public float PSpeed
     {
-        return f_Speed;
+        // 이동속도
+        get { return Speed; }
+        set { Speed = value; }
     }
-    public void SetJump(float _jump)
+
+    public float PJump
     {
-        f_Jump = _jump;
+        // 점프력
+        get { return Jump; }
+        set { Jump = value; }
     }
-    public float GetJump()
+
+    public int PIsJump
     {
-        return f_Jump;
+        // 점프 상태값
+        get { return isJump; }
+        set { isJump = value; }
     }
-    public int GetJumpNow()
+
+    public bool PIsGround
     {
-        return isJump;
+        // 바닥 접촉 상태값
+        get { return IsGround;}
+        set { IsGround = value;}
     }
-    public void SetJumpNow(int _state)
-    {
-        isJump = _state;
-    }
-    public bool GetIsGround()
-    {
-        return IsGround;
-    }
-    public void SetIsGround(bool _state)
-    {
-        IsGround = _state;
-    }
+
     public void SetPlayerPos(Vector3 _pos)
     {
         PlayerPos = _pos;
@@ -69,11 +81,11 @@ public class GameMgr : MonoBehaviour
     {
         return PlayerPos;
     }
-    public void SetAttackDamage(float _f)
+    public void SetAttackDamage(int _i)
     {
-        AttackDamage = _f;
+        AttackDamage = _i;
     }
-    public float GetAttackDamage()
+    public int GetAttackDamage()
     {
         return AttackDamage;
     }
