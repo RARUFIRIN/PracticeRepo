@@ -9,7 +9,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
 {
     public Item item;
     public int itemCount;
-    public Image itemImage;
+    public Image ItemImage;
 
     [SerializeField]
     private TextMeshProUGUI text_count;
@@ -20,18 +20,35 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     public void OnPointerClick(PointerEventData eventData)      // 마우스 우클릭 이벤트
     {
         if(eventData.button == PointerEventData.InputButton.Right)
-
         {
             if(item != null)
             {
-                if(item.itemType == Item.ItemType.Weapon)
+                if(item.equiptype == Item.EquipType.Weapon)
                 {
                     // 무기 교체 or 무기 장착
+                    InventoryMgr.GetInstance().Equip(Item.EquipType.Weapon, this);
 
                 }
-                else if (item.itemType == Item.ItemType.armor)
+                else if (item.equiptype == Item.EquipType.Armor)
                 {
                     // 방어구 교체 or 방어구 장착
+                    InventoryMgr.GetInstance().Equip(Item.EquipType.Armor, this);
+
+
+                }
+                else if (item.equiptype == Item.EquipType.Boot)
+                {
+                    // 방어구 교체 or 방어구 장착
+                    InventoryMgr.GetInstance().Equip(Item.EquipType.Boot, this);
+
+
+
+                }
+                else if (item.equiptype == Item.EquipType.Helmet)
+                {
+                    // 방어구 교체 or 방어구 장착
+                    InventoryMgr.GetInstance().Equip(Item.EquipType.Helmet, this);
+
 
                 }
                 else if (item.itemType == Item.ItemType.Food)
@@ -42,7 +59,6 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
                 }
             }
         }
-        Debug.Log("우클릭!");
     }
 
     public void OnBeginDrag(PointerEventData eventData)         // 드래그 시작 이벤트
@@ -50,7 +66,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         if(item != null)
         {
             DragSlot.instance.TargetSlot = this;
-            DragSlot.instance.DragSetImage(itemImage);
+            DragSlot.instance.DragSetImage(ItemImage);
             DragSlot.instance.transform.position = eventData.position;
         }
     }
@@ -63,8 +79,10 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
 
     public void OnEndDrag(PointerEventData eventData)       // 드래그 끝남 이벤트
     {
+
         DragSlot.instance.SetColor(0);                      // 이미지 투명화
         DragSlot.instance.TargetSlot = null;                // 타겟 정보 초기화
+
     }
 
 
@@ -94,23 +112,23 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
 
     private void SetColor(float _alpha) // 아이템 아이콘 투명도 조절
     {
-        Color color = itemImage.color;
+        Color color = ItemImage.color;
         color.a = _alpha;
-        itemImage.color = color;
+        ItemImage.color = color;
     }
 
     public void AddItem(Item _item, int _count = 1) // 아이템 추가
     {
         item = _item;
         itemCount = _count;
-        itemImage.sprite = item.itemImage;
+        ItemImage.sprite = item.ItemImage;
 
-        if(item.itemType != Item.ItemType.Weapon && item.itemType != Item.ItemType.armor) // 무기가 아니면 갯수표시를 활성화
+        if(item.itemType != Item.ItemType.Equip) // 무기가 아니면 갯수표시를 활성화
         {
             image_count.SetActive(true);
             text_count.text = itemCount.ToString();
         }
-        else // 무기 일 때 갯수표시를 비활성화
+        else // 장비 일 때 갯수표시를 비활성화
         {
             text_count.text = "0";
             image_count.SetActive(false);
@@ -135,7 +153,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         // 각종 정보 초기화
         item = null;
         itemCount = 0;
-        itemImage.sprite = null;
+        ItemImage.sprite = null;
         SetColor(0); // 해당 아이템 이미지 투명화
 
         text_count.text = "0";

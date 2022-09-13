@@ -8,18 +8,35 @@ public class Item : ScriptableObject
 {
     public enum ItemType
     {
-        Weapon,
-        armor,
+        Equip,
         Food,
         Ingredient,
-
     }
+
+    public enum EquipType
+    {
+        Weapon,
+        Armor,
+        Helmet,
+        Boot,
+        None,
+    }
+
+    public EquipType equiptype;
     public ItemType itemType;
     public string itemName;
     public int itemidx;
-    public Sprite itemImage;
+    public Sprite ItemImage;
     public GameObject itemPrefab;
 
-    public string WeaponType;
+    // 소모품용
+    public int RecoveryPoint;
+
+    // 장비용
+    public int RequiredLevel;
+    public int AttackDamage;
+    public int Defense;
 }
+
+
 

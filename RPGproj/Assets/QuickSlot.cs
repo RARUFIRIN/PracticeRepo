@@ -10,7 +10,7 @@ public class QuickSlot : MonoBehaviour, IDropHandler
 {
     public Item item;
     public int itemCount;
-    public Image itemImage;
+    public Image ItemImage;
     public Slot LinkedSlot;
 
     [SerializeField]
@@ -82,7 +82,7 @@ public class QuickSlot : MonoBehaviour, IDropHandler
 
             LinkedSlot = DragSlot.instance.TargetSlot;      // 가져올 슬롯정보를 저장함.
             item = LinkedSlot.item;
-            itemImage.sprite = LinkedSlot.item.itemImage;
+            ItemImage.sprite = LinkedSlot.item.ItemImage;
             SetColor(1);
             if (DragSlot.instance.TargetSlot.itemCount > 0)
             {
@@ -98,16 +98,16 @@ public class QuickSlot : MonoBehaviour, IDropHandler
 
     public void SetColor(float _alpha) // 아이템 아이콘 투명도 조절
     {
-        Color color = itemImage.color;
+        Color color = ItemImage.color;
         color.a = _alpha;
-        itemImage.color = color;
+        ItemImage.color = color;
     }
     
     void UpdateSlot()
     {
         item = LinkedSlot.item;
         itemCount = LinkedSlot.itemCount;
-        itemImage.sprite = LinkedSlot.itemImage.sprite;
+        ItemImage.sprite = LinkedSlot.ItemImage.sprite;
     }
 
 

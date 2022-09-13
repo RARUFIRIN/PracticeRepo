@@ -8,7 +8,7 @@ public class DragSlot : MonoBehaviour
     static public DragSlot instance;
     public Slot TargetSlot;
     [SerializeField]
-    Image itemImage;
+    Image ItemImage;
 
     void Start()
     {
@@ -17,18 +17,18 @@ public class DragSlot : MonoBehaviour
 
     public void DragSetImage(Image _img)
     {
-        itemImage.sprite = _img.sprite;
+        ItemImage.sprite = _img.sprite;
         SetColor(1);
     }
     
     public void SetColor(float _f)
     {
-        Color color = itemImage.color;
+        Color color = ItemImage.color;
         color.a = _f;
-        itemImage.color = color;
+        ItemImage.color = color;
     }
     public Sprite GetImage()
     {
-        return itemImage.sprite;
+        return ItemImage.sprite;
     }
 }

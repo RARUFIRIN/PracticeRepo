@@ -34,6 +34,19 @@ public class InventoryMgr : MonoBehaviour
     Slot PreSlot, CurSlot;
     // 퀵슬롯 동기화 용 슬롯
 
+    [SerializeField]
+    GameObject EquipSlotParent; // 장비슬롯
+    [SerializeField]
+    EquipSlot_Weapon EquipSlot_Weapon;
+    [SerializeField]
+    EquipSlot_Helmet EquipSlot_Helmet;
+    [SerializeField]
+    EquipSlot_Armor EquipSlot_Armor;
+    [SerializeField]
+    EquipSlot_Boot EquipSlot_Boot;
+    bool B_EquipSlotActive = false;
+
+
     private void Start()
     {
         PreSlot = GetComponent<Slot>();
@@ -44,34 +57,58 @@ public class InventoryMgr : MonoBehaviour
     private void Update()
     {
         OpenInventory();
+        OpenEquipSlot();
     }
 
+    public void Equip(Item.EquipType _Type, Slot _slot)
+    {
+        switch (_Type)
+        {
+            case Item.EquipType.Weapon:
+                {
+                    EquipSlot_Weapon.RegistSlot(_slot);
+                }
+                break;
+            case Item.EquipType.Armor:
+                {
+                    EquipSlot_Armor.RegistSlot(_slot);
+                }
+                break;
+            case Item.EquipType.Helmet:
+                {
+                    EquipSlot_Helmet.RegistSlot(_slot);
+                }
+                break;
+            case Item.EquipType.Boot:
+                {
+                    EquipSlot_Boot.RegistSlot(_slot);
+                }
+                break;
+            default:
+                break;
+        }
+    }
     private void OpenInventory()
     {
         if(Input.GetKeyDown(KeyCode.I))
         {
             B_inventoryActive = !B_inventoryActive;
-
-            if (B_inventoryActive)
-                OpenInventoryUI();
-            else
-                CloseInventoryUI();
+            InventoryUI.SetActive(B_inventoryActive);
         }
     }
 
-    private void OpenInventoryUI()
+    private void OpenEquipSlot()
     {
-        InventoryUI.SetActive(true);
-    }
-
-    private void CloseInventoryUI()
-    {
-        InventoryUI.SetActive(false);
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            B_EquipSlotActive = !B_EquipSlotActive;
+            EquipSlotParent.SetActive(B_EquipSlotActive);
+        }
     }
 
     public void GainItem(Item _item, int _count = 1) // 아이템 획득
     {
-        if(Item.ItemType.Weapon != _item.itemType && Item.ItemType.armor != _item.itemType)
+        if(Item.ItemType.Equip != _item.itemType)
         { 
             for(int i = 0; i < slots.Length; i++)
             {
@@ -99,18 +136,13 @@ public class InventoryMgr : MonoBehaviour
         // InventoryIsFull = true;
     }
 
-    public void InstedUpdateSlotCount(Slot _s)
-    {
-        _s.UpdateSlotCount(-1);
-    }    
-
     public void SetChangedSlots(Slot _s1, Slot _s2)
     {
         PreSlot = _s1;
         CurSlot = _s2;
     }
 
-    public Slot GetChangedSlot(int i)/* 0은 PreSlot을 1은 CurSlot 을 반환합니다.)*/
+    public Slot GetChangedSlot(int i)// 0은 PreSlot을 1은 CurSlot 을 반환
     {
         if (i == 0)
         {

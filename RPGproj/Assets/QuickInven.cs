@@ -60,7 +60,7 @@ public class QuickInven : MonoBehaviour
     {
         _s.item = null;
         _s.itemCount = 0;
-        _s.itemImage.sprite = null;
+        _s.ItemImage.sprite = null;
         _s.LinkedSlot = null;
         _s.OnClear = 1;
         _s.SetColor(0);
@@ -68,7 +68,8 @@ public class QuickInven : MonoBehaviour
 
     void SpendItem(int _i)
     {
-        InventoryMgr.GetInstance().InstedUpdateSlotCount(QuickSlots[_i].LinkedSlot);
+        QuickSlots[_i].LinkedSlot.UpdateSlotCount(-1);
+
         switch (QuickSlots[_i].item.itemName)
         {
             case "Apple":

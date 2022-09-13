@@ -8,19 +8,20 @@ public class Monster : MonoBehaviour
     Rigidbody2D rigid;
     SpriteRenderer spriteRenderer;
 
-    int IsAttack;
-    int IsMove;
-    int IsDie;
-    public int HP;
-    float Speed = 1.5f;
-    MonsterState State;
+    int IsAttack;       // 공격 상태값
+    int IsMove;         // 움직임 상태값
+    public int HP;      // HP
+    float Speed = 1.5f; // 몬스터 이동속도
+    MonsterState State; // 몬스터 상태값
 
-    float jump_pre;
+    float jump_pre;     // 위치값으로 추락 애니메이션 조절
     float jump_col;
     
-    float RayDist = 5.0f;
+    float RayDist = 5.0f;   // 몬스터 인식범위
 
-    Vector2 dir = Vector2.right;
+    Vector2 dir = Vector2.right;    // 레이캐스트용 벡터
+
+    int DropExp;        // 주는 경험치
     private void Awake()
     {
         HP = 100;
@@ -111,6 +112,13 @@ public class Monster : MonoBehaviour
         }
     }
 
+    void ExpControl()
+    {
+        DropExp = 20;
+        GameMgr.GetInstance().PDropEXP = DropExp;
+        GameMgr.GetInstance().PIsKilled = true;
+    }
+
     void JumpState() // 점프 > 하강
     {
         jump_pre = jump_col;
@@ -150,6 +158,7 @@ public class Monster : MonoBehaviour
     {
         animator.SetInteger("IsDie", 1);
         yield return new WaitForSeconds(0.5f);
+        ExpControl();
         Destroy(gameObject);
     }
 
@@ -160,7 +169,7 @@ public class Monster : MonoBehaviour
         animator.SetInteger("IsWalk", 0);
         animator.SetInteger("IsAttack", 0);
         rigid.velocity = Vector3.zero;
-        if (GameMgr.GetInstance().GetPlayerPos().x < transform.position.x)
+        if (GameMgr.GetInstance().PPlayerPos.x < transform.position.x)
         {
             rigid.AddForce(new Vector2(40, 100));
         }
@@ -168,8 +177,8 @@ public class Monster : MonoBehaviour
         {
             rigid.AddForce(new Vector2(-40, 100));
         }
-        HP -= GameMgr.GetInstance().GetAttackDamage();
-        StartCoroutine(ChangeState(1.5f, MonsterState.Trace));
+        HP -= GameMgr.GetInstance().PAttackDamage;
+        StartCoroutine(ChangeState(0.25f, MonsterState.Trace));
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -219,28 +228,28 @@ public class Monster : MonoBehaviour
     }
     void Trace()
     {
-        if(Vector3.Distance(transform.position, GameMgr.GetInstance().GetPlayerPos()) < RayDist * 2)
+        if(Vector3.Distance(transform.position, GameMgr.GetInstance().PPlayerPos) < RayDist * 2)
         {
-            if (Vector3.Distance(transform.position, GameMgr.GetInstance().GetPlayerPos()) > 2.5f && IsAttack != 1)
+            if (Vector3.Distance(transform.position, GameMgr.GetInstance().PPlayerPos) > 2.5f && IsAttack != 1)
             {
-                if (GameMgr.GetInstance().GetPlayerPos().x > transform.position.x)
+                if (GameMgr.GetInstance().PPlayerPos.x > transform.position.x)
                 {
                     Move(1);
                 }
 
-                if (GameMgr.GetInstance().GetPlayerPos().x < transform.position.x)
+                if (GameMgr.GetInstance().PPlayerPos.x < transform.position.x)
                 {
                     Move(-1);
                 }
             }
-            if(Vector3.Distance(transform.position, GameMgr.GetInstance().GetPlayerPos()) < RayDist / 2)
+            if(Vector3.Distance(transform.position, GameMgr.GetInstance().PPlayerPos) < RayDist / 2)
             {
-                if (GameMgr.GetInstance().GetPlayerPos().x > transform.position.x)
+                if (GameMgr.GetInstance().PPlayerPos.x > transform.position.x)
                 {
                     Attack(1);
                 }
 
-                if (GameMgr.GetInstance().GetPlayerPos().x < transform.position.x)
+                if (GameMgr.GetInstance().PPlayerPos.x < transform.position.x)
                 {
                     Attack(-1);
                 }

@@ -32,12 +32,12 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        GameMgr.GetInstance().SetAttackDamage(20);
+        GameMgr.GetInstance().PAttackDamage = 20;
         
     }
     void Update()
     {
-        GameMgr.GetInstance().SetPlayerPos(transform.position);
+        GameMgr.GetInstance().PPlayerPos = transform.position;
         if (CanAttack != 2)
         {
             Move();
