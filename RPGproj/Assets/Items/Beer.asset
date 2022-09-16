@@ -18,7 +18,8 @@ MonoBehaviour:
   itemidx: 102
   ItemImage: {fileID: 21300000, guid: d0c05b9125ed56349a5385e1a77547b7, type: 3}
   itemPrefab: {fileID: 5081450646886255209, guid: 5b0efa849893e0340b62ebe146a568d6, type: 3}
-  RecoveryPoint: 0
+  RecoveryHP: 0
+  RecoveryMP: 20
   RequiredLevel: 0
   AttackDamage: 0
   Defense: 0

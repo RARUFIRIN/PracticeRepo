@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7402141476384224474}
   m_Layer: 10
   m_Name: AttackBox
-  m_TagString: AttackBox
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
