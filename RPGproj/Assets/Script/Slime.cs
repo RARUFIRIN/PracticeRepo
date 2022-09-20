@@ -44,20 +44,16 @@ public class Slime : MonoBehaviour
     {
         StartCoroutine(MoveTime());
         State = MonsterState.IDLE;
+        DropExp = 20;
     }
     private void Update()
     {
         HPControl();
-        if (IsAttack == 1)
-        {
-            StartCoroutine(AttackTime());
-        }
 
         if(HP <= 0)
         {
             State = MonsterState.Die;
         }
-        Debug.Log(State);
         switch (State)
         {
             case MonsterState.IDLE:
@@ -123,7 +119,6 @@ public class Slime : MonoBehaviour
 
     void ExpDrop()
     {
-        DropExp = 20;
         GameMgr.GetInstance().PDropEXP = DropExp;
         GameMgr.GetInstance().PIsKilled = true;
     }
@@ -152,7 +147,7 @@ public class Slime : MonoBehaviour
     }
     IEnumerator AttackTime()
     {
-        IsAttack = 2;
+        IsAttack = 1;
         yield return new WaitForSeconds(3.0f);
         IsAttack = 0;
     }
@@ -189,7 +184,7 @@ public class Slime : MonoBehaviour
             rigid.AddForce(new Vector2(-40, 100));
         }
         HP -= GameMgr.GetInstance().PAttackDamage;
-        StartCoroutine(ChangeState(0.25f, MonsterState.Trace));
+        StartCoroutine(ChangeState(0.5f, MonsterState.Trace));
     }
     void HPControl() // Ã¼·Â ¹Ù
     {
@@ -230,7 +225,7 @@ public class Slime : MonoBehaviour
     {
         if (IsAttack == 0)
         {
-            IsAttack = 1;
+            StartCoroutine(AttackTime());
             rigid.AddForce(new Vector2(70 * _f, 200));
             IsGround = false;
             animator.SetInteger("IsAttack", 1);
@@ -287,8 +282,9 @@ public class Slime : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.transform.CompareTag("Ground") && (IsAttack != 1 || State == MonsterState.Damaged))
+        if (collision.transform.CompareTag("Ground") && (IsAttack != 0 || State == MonsterState.Damaged))
         {
+            IsAttack = 2;
             IsGround = true;
             animator.SetInteger("IsAttack", 0);
 

@@ -345,8 +345,13 @@
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/Unity.VSCode.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/UnityEngine.UI.ref.dll"
+"Assets/LoadObject.cs"
+"Assets/Portal.cs"
+"Assets/QuestMgr.cs"
+"Assets/QuestNPC.cs"
 "Assets/Script/AttackBox.cs"
 "Assets/Script/CameraControl.cs"
+"Assets/Script/DontDstroy.cs"
 "Assets/Script/DragSlot.cs"
 "Assets/Script/Drop_item.cs"
 "Assets/Script/EquipSlot_Armor.cs"
@@ -364,6 +369,8 @@
 "Assets/Script/SkillMgr.cs"
 "Assets/Script/Slime.cs"
 "Assets/Script/Slot.cs"
+"Assets/Script/SpawnPoint.cs"
+"Assets/Script/Wolf.cs"
 -langversion:9.0
 
 /deterministic

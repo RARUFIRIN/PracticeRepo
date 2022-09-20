@@ -95,10 +95,13 @@ public class Player : MonoBehaviour
         }
      
 
-        if(Input.GetKeyDown(KeyCode.UpArrow))
+        if(Input.GetKey(KeyCode.G))
         {
-            if(CanDamaged == true)
-            Damaged(20);
+            GameMgr.GetInstance().PTryTryInter = true;
+        }
+        else if(Input.GetKeyUp(KeyCode.UpArrow))
+        {
+            GameMgr.GetInstance().PTryTryInter = false;
         }
 
 

@@ -9,6 +9,7 @@ TagManager:
   - Monster
   - Border
   - Slime
+  - Wolf
   layers:
   - Default
   - TransparentFX

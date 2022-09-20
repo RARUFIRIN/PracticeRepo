@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameMgr : MonoBehaviour
@@ -81,6 +82,12 @@ public class GameMgr : MonoBehaviour
     int DropedExp;
     bool IsKilled = false;
     Vector3 PlayerPos;
+
+    // 장면전환용
+    bool TryInter;
+    [SerializeField]
+    GameObject Fade;
+
 
     private void Start()
     {
@@ -172,9 +179,42 @@ public class GameMgr : MonoBehaviour
         Text_Defense.text = Defense.ToString() + "(" + ArmorDef.ToString() + ")";
     }
 
+    //페이드 아웃
+    public IEnumerator FadeInStart()
+    {
+        Fade.SetActive(true);
+        for (float f = 1f; f > 0; f -= 0.02f)
+        {
+            Color c = Fade.GetComponent<Image>().color;
+            c.a = f;
+            Fade.GetComponent<Image>().color = c;
+            yield return null;
+        }
+        yield return new WaitForSeconds(1);
+        Fade.SetActive(false);
+    }
 
+    //페이드 인
+    public IEnumerator FadeOutStart()
+    {
+        Fade.SetActive(true);
+        for (float f = 0f; f < 1; f += 0.02f)
+        {
+            Color c = Fade.GetComponent<Image>().color;
+            c.a = f;
+            Fade.GetComponent<Image>().color = c;
+            yield return null;
+        }
+        SceneManager.LoadScene(1);
+    }
 
     #region State Get Set 
+    public bool PTryInter
+    {
+        get { return TryInter; }
+        set { TryInter = value; }
+
+    }
     public int PLevel
     {
         get { return Level; }
